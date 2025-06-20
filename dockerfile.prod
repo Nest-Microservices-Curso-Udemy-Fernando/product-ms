@@ -12,9 +12,6 @@ FROM node:21-alpine3.19 as build
 
 WORKDIR /usr/src/app
 
-# Instalar pnpm en la etapa build
-RUN npm install -g pnpm
-
 # Copiar de deps, los modulos de node
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 
@@ -27,7 +24,7 @@ COPY . .
 RUN npx prisma generate
 
 # Creamos el build
-RUN npm build
+RUN npm run build
 
 # Instala solo dependencias de producción usando pnpm
 RUN npm ci -f --only=production && npm cache clean --force
